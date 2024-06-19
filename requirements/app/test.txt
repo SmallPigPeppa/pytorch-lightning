@@ -12,7 +12,7 @@ playwright ==1.38.0
 httpx ==0.25.0
 trio <0.22.0  # strict https://github.com/python-trio/trio/pull/2213
 pympler
-psutil <5.10.0
+psutil <6.1.0
 setuptools <68.3.0
 requests-mock ==1.11.0
 pandas
