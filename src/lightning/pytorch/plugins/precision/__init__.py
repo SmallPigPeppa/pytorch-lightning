@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 from lightning.pytorch.plugins.precision.amp import MixedPrecision
+from lightning.pytorch.plugins.precision.amp_npu import MixedPrecision_NPU
 from lightning.pytorch.plugins.precision.bitsandbytes import BitsandbytesPrecision
 from lightning.pytorch.plugins.precision.deepspeed import DeepSpeedPrecision
 from lightning.pytorch.plugins.precision.double import DoublePrecision
@@ -28,6 +29,7 @@ __all__ = [
     "FSDPPrecision",
     "HalfPrecision",
     "MixedPrecision",
+    "MixedPrecision_NPU",
     "Precision",
     "TransformerEnginePrecision",
     "XLAPrecision",

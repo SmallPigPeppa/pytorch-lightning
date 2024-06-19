@@ -36,6 +36,7 @@ from lightning.pytorch.accelerators.cuda import CUDAAccelerator
 from lightning.pytorch.accelerators.mps import MPSAccelerator
 from lightning.pytorch.accelerators.npu import NPUAccelerator
 from lightning.pytorch.accelerators.xla import XLAAccelerator
+# Add NPU support
 from lightning.pytorch.plugins import (
     _PLUGIN_INPUT,
     CheckpointIO,
@@ -44,6 +45,7 @@ from lightning.pytorch.plugins import (
     FSDPPrecision,
     HalfPrecision,
     MixedPrecision,
+    MixedPrecision_NPU,
     Precision,
     TransformerEnginePrecision,
     XLAPrecision,
@@ -561,6 +563,11 @@ class _AcceleratorConnector:
             rank_zero_info(
                 f"Using {'16bit' if self._precision_flag == '16-mixed' else 'bfloat16'} Automatic Mixed Precision (AMP)"
             )
+            # Check for NPU and return immediately if applicable
+            if self._accelerator_flag == "npu":
+                device = "npu"
+                return MixedPrecision_NPU(self._precision_flag, device)  # type: ignore[arg-type]
+            # else Unchanged
             device = "cpu" if self._accelerator_flag == "cpu" else "cuda"
             return MixedPrecision(self._precision_flag, device)  # type: ignore[arg-type]
 
