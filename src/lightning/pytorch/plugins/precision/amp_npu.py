@@ -31,7 +31,6 @@ from lightning.pytorch.utilities.exceptions import MisconfigurationException
 try:
     from torch_npu.npu import amp
 except ImportError:
-    amp = None  # Set amp to None if import fails
     import warnings
     warnings.warn("amp is not supported in the current NPU environment.", ImportWarning)
 
@@ -50,7 +49,7 @@ class MixedPrecision_NPU(Precision):
         self,
         precision: Literal["16-mixed", "bf16-mixed"],
         device: str,
-        scaler: Optional[amp.GradScaler] = None,
+        scaler: Optional[Any] = None
     ) -> None:
         if precision not in ("16-mixed", "bf16-mixed"):
             raise ValueError(
