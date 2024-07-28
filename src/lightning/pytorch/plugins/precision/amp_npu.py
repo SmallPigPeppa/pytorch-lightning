@@ -31,6 +31,7 @@ from lightning.pytorch.utilities.exceptions import MisconfigurationException
 try:
     from torch_npu.npu import amp
 except ImportError:
+    amp = None  # Set amp to None if import fails
     import warnings
     warnings.warn("amp is not supported in the current NPU environment.", ImportWarning)
 
