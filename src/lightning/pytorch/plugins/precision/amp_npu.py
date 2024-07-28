@@ -26,8 +26,14 @@ from lightning.pytorch.utilities import GradClipAlgorithmType
 from lightning.pytorch.utilities.exceptions import MisconfigurationException
 
 
+# # todo: amp for NPU
+# from torch_npu.npu import amp
 # todo: amp for NPU
-from torch_npu.npu import amp
+try:
+    from torch_npu.npu import amp
+except ImportError:
+    import warnings
+    warnings.warn("amp is not supported in the current NPU environment.", ImportWarning)
 
 
 class MixedPrecision_NPU(Precision):
