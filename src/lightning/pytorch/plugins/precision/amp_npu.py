@@ -25,7 +25,6 @@ from lightning.pytorch.plugins.precision.precision import Precision
 from lightning.pytorch.utilities import GradClipAlgorithmType
 from lightning.pytorch.utilities.exceptions import MisconfigurationException
 
-
 # todo: amp for NPU
 # from torch_npu.npu import amp
 try:
@@ -46,10 +45,11 @@ class MixedPrecision_NPU(Precision):
     """
 
     def __init__(
-        self,
-        precision: Literal["16-mixed", "bf16-mixed"],
-        device: str,
-        scaler: Optional[Any] = None
+            self,
+            precision: Literal["16-mixed", "bf16-mixed"],
+            device: str,
+            # scaler: Optional[amp.GradScaler] = None,
+            scaler: Optional[Any] = None
     ) -> None:
         if precision not in ("16-mixed", "bf16-mixed"):
             raise ValueError(
@@ -76,11 +76,11 @@ class MixedPrecision_NPU(Precision):
 
     @override
     def optimizer_step(  # type: ignore[override]
-        self,
-        optimizer: Optimizable,
-        model: "pl.LightningModule",
-        closure: Callable[[], Any],
-        **kwargs: Any,
+            self,
+            optimizer: Optimizable,
+            model: "pl.LightningModule",
+            closure: Callable[[], Any],
+            **kwargs: Any,
     ) -> Any:
         if self.scaler is None:
             # skip scaler logic, as bfloat16 does not require scaler
@@ -110,10 +110,10 @@ class MixedPrecision_NPU(Precision):
 
     @override
     def clip_gradients(
-        self,
-        optimizer: Optimizer,
-        clip_val: Union[int, float] = 0.0,
-        gradient_clip_algorithm: GradClipAlgorithmType = GradClipAlgorithmType.NORM,
+            self,
+            optimizer: Optimizer,
+            clip_val: Union[int, float] = 0.0,
+            gradient_clip_algorithm: GradClipAlgorithmType = GradClipAlgorithmType.NORM,
     ) -> None:
         if clip_val > 0 and _optimizer_handles_unscaling(optimizer):
             raise RuntimeError(
